@@ -40,7 +40,7 @@ export default function Login() {
       password,
     });
     console.log(data, error);
-    // add conditional to check if user is verified
+    // TODO: Persist session with local storage
     router.push("/dashboard");
     router.refresh();
   };
