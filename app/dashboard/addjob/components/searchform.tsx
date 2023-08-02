@@ -1,8 +1,8 @@
-export default function SearchForm({setSearchText, setZipcode, handleSubmit, searchText, zipcode}: {setSearchText: any, setZipcode: any, handleSubmit: any, searchText: any, zipcode: any}) {
+export default function SearchForm({setSearchText, setZipcode, handleSearchSubmit, searchText, zipcode}: {setSearchText: any, setZipcode: any, handleSearchSubmit: any, searchText: any, zipcode: any}) {
     
     
     return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form onSubmit={handleSearchSubmit} className="mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Search Query:
@@ -30,6 +30,7 @@ export default function SearchForm({setSearchText, setZipcode, handleSubmit, sea
 
           <button
             type="submit"
+            name="submit"
             className="w-full bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
             Submit

@@ -10,9 +10,10 @@ export async function POST(req: NextRequest) {
   const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(`${data.searchText} in ${data.zip}`)}&key=${YOUR_API_KEY}`;
 
   const response = await fetch(apiUrl);
+  
   const json = await response.json();
  
-  
+  console.log(json);
 
   return NextResponse.json(json);
 }

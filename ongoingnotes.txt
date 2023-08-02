@@ -1,0 +1,1 @@
+Continue add job from sent to database, job details form.

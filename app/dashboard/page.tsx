@@ -1,9 +1,5 @@
 "use client";
-import DropdownMenu from "./components/dropdown";
-import { useState } from "react";
-import AddJob from "./components/addjob";
-
-
+import LastSevenDaysEarnings from "./components/charts/lastsevendayearnings";
 
 export default function Dashboard() {
     
@@ -11,6 +7,10 @@ export default function Dashboard() {
     
     return (
         <>
+         <h1>DASHBOARD</h1>
+        
+
+        <LastSevenDaysEarnings />
         
         </>
     )

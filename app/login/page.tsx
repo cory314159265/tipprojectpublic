@@ -40,7 +40,6 @@ export default function Login() {
       password,
     });
     console.log(data, error);
-    // TODO: Persist session with local storage
     router.push("/dashboard");
     router.refresh();
   };
@@ -112,7 +111,7 @@ export default function Login() {
           )}
           {view === "sign-in" && (
             <>
-              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6">
+              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6" name="Sign In">
                 Sign In
               </button>
               <p className="text-sm text-center">
@@ -128,12 +127,13 @@ export default function Login() {
           )}
           {view === "sign-up" && (
             <>
-              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6">
+              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6" name="sign up">
                 Sign Up
               </button>
               <p className="text-sm text-center">
                 Already have an account?
                 <button
+                  name = "sign in now"
                   className="ml-1 underline"
                   onClick={() => setView("sign-in")}
                 >
