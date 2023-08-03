@@ -5,7 +5,7 @@ import LogoutButton from "./components/LogoutButton";
 
 export const dynamic = "force-dynamic";
 
-import { ParsedUrlQuery } from 'querystring';
+import { ParsedUrlQuery } from "querystring";
 
 interface Props {
   searchParams: ParsedUrlQuery;
@@ -16,6 +16,8 @@ export default async function Index({ searchParams }: Props) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+
   return (
     <div>
       {user ? (
@@ -31,7 +33,7 @@ export default async function Index({ searchParams }: Props) {
           Login
         </Link>
       )}
-      {searchParams.redirected ? (<h1>Redirected</h1>) : (<h1>Not Redirected</h1>) }
+      {searchParams.redirected ? <h1>Redirected</h1> : <h1>Not Redirected</h1>}
     </div>
   );
 }

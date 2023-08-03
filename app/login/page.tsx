@@ -22,7 +22,7 @@ export default function Login() {
       alert("Passwords do not match");
       return;
     }
-    await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -30,6 +30,9 @@ export default function Login() {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
+    console.log(data);
+
+    
     setView("check-email");
   };
 
