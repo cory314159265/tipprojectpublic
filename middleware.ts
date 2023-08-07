@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
   const res: NextResponse = NextResponse.next();
-  const protectedPaths: string[] = ["dashboard"];
+  const protectedPaths: string[] = ["dashboard", "api"];
 
   const supabase: SupabaseClient = createMiddlewareClient({ req, res });
   
@@ -18,6 +18,6 @@ export async function middleware(req: NextRequest) {
       }
     }
   }
-  await supabase.auth.getSession();
+  
   return res;
 }

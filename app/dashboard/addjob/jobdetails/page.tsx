@@ -1,6 +1,6 @@
 "use client"
 
-import { ParsedUrlQuery } from "querystring";
+
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -17,12 +17,12 @@ export default function JobDetails() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const jobOptions = [
-    "host",
-    "server",
-    "buser",
-    "bartender",
-    "barback",
-    "server assistant",
+    "Host",
+    "Server",
+    "Buser",
+    "Bartender",
+    "Barback",
+    "Server assistant",
   ];
   const router = useRouter();
 
@@ -120,7 +120,7 @@ export default function JobDetails() {
           className="bg-green-700 rounded px-4 py-2 text-white mb-6"
           name="Sign Up"
         >
-          Sign Up
+          Submit
         </button>
       </form>
     </div>

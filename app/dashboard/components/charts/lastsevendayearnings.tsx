@@ -52,7 +52,11 @@ export const data = {
 };
 
 export default function LastSevenDayEarnings() {
-  return <Bar options={options} data={data} />;
+  return (
+    <div className="w-full h-screen">
+      <Bar options={options} data={data} />
+    </div>
+  );
 }
 
 
