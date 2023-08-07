@@ -11,6 +11,9 @@ interface Job {
   job_type: string;
   job_hourly_pay: string;
   job_id: number;
+  business_id: string;
+  created_at: string;
+  user_id: string;
 }
 
 const AddTipForm: React.FC = () => {
@@ -22,7 +25,8 @@ const AddTipForm: React.FC = () => {
     watch,
   } = useForm();
 
-  const [jobsList, setJobsList] = useState<Job[]>([]);
+  const [jobsList, setJobsList] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const supabase = createClientComponentClient();
 
   const onSubmit = async (data: any) => {
@@ -37,7 +41,8 @@ const AddTipForm: React.FC = () => {
         endShiftTime.setDate(endShiftTime.getDate() + 1);
       }
 
-      const differenceInMinutes = (endShiftTime.getTime() - startShiftTime.getTime()) / 60000;
+      const differenceInMinutes =
+        (endShiftTime.getTime() - startShiftTime.getTime()) / 60000;
       console.log("Difference in minutes:", differenceInMinutes);
     } catch (error) {
       console.error("Error adding tip:", error);
@@ -49,7 +54,7 @@ const AddTipForm: React.FC = () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
+  
       if (user) {
         const user_id = user.id;
         const response = await fetch(`/api/getjobs`, {
@@ -60,20 +65,43 @@ const AddTipForm: React.FC = () => {
           body: JSON.stringify(user_id),
         });
         const data = await response.json();
-        setJobsList(data);
+        
+        const jobsArray = await Promise.all(
+          data.map(async (job: Job) => {
+            const response = await fetch(`/api/getbusinessname`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(job.business_id),
+            });
+            const res = await response.json();
+            return {
+              job_type: job.job_type,
+              job_hourly_pay: job.job_hourly_pay,
+              job_id: res[0].name,
+            };
+          })
+        );
+  
+        setJobsList(jobsArray);
+        setIsLoading(false);
       }
     };
+  
     getJobs();
   }, []);
+  
 
   const watchedFields = watch();
-
+  
   return (
+    <> {isLoading ? <p>Loading...</p> : 
     <form
       className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <JobSelect register={register} jobsList={jobsList} errors={errors} />
+      <JobSelect register={register} jobsList={jobsList} errors={errors} /> 
       <AmountInput register={register} errors={errors} />
       <DateInput register={register} errors={errors} />
       <StartTime register={register} errors={errors} />
@@ -88,6 +116,7 @@ const AddTipForm: React.FC = () => {
         </button>
       </div>
     </form>
+}</>
   );
 };
 
