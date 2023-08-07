@@ -4,7 +4,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import JobSelect from "./JobSelect";
 import AmountInput from "./AmountInput";
 import DateInput from "./DateInput";
-import { get } from "http";
+import StartTime from "./StartTime";
+import EndTime from "./EndTime";
 
 interface Job {
   job_type: string;
@@ -28,6 +29,16 @@ const AddTipForm: React.FC = () => {
     try {
       reset();
       console.log("User-entered fields:", data);
+      const startShiftTime = new Date(`1970-01-01T${data.starttime}`);
+      const endShiftTime = new Date(`1970-01-01T${data.endtime}`);
+
+      // Check if endShiftTime is earlier than startShiftTime (next day scenario)
+      if (endShiftTime < startShiftTime) {
+        endShiftTime.setDate(endShiftTime.getDate() + 1);
+      }
+
+      const differenceInMinutes = (endShiftTime.getTime() - startShiftTime.getTime()) / 60000;
+      console.log("Difference in minutes:", differenceInMinutes);
     } catch (error) {
       console.error("Error adding tip:", error);
     }
@@ -65,6 +76,8 @@ const AddTipForm: React.FC = () => {
       <JobSelect register={register} jobsList={jobsList} errors={errors} />
       <AmountInput register={register} errors={errors} />
       <DateInput register={register} errors={errors} />
+      <StartTime register={register} errors={errors} />
+      <EndTime register={register} errors={errors} />
       {/* ... (other form fields) */}
       <div className="flex items-center justify-center">
         <button
