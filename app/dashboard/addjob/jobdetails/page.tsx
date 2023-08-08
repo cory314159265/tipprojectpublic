@@ -40,7 +40,7 @@ export default function JobDetails() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const { data, error } = await supabase.auth.getSession();
-    console.log("user ", data);
+    
     e.preventDefault();
     if (data.session) {
       const requestBody = {
@@ -49,7 +49,7 @@ export default function JobDetails() {
         job_hourly_pay: hourlyPay,
         business_id: jobId,
       };
-      console.log(requestBody);
+      
       try {
         const response = await fetch("/api/addjob/", {
           method: "POST",
@@ -59,7 +59,7 @@ export default function JobDetails() {
           body: JSON.stringify(requestBody),
         });
         const resfromjobinsert = await response.json();
-        console.log("response", resfromjobinsert);
+        
         if (resfromjobinsert) {
           setFormSubmitted(true);
           setSuccessMessage(`${job} paying ${hourlyPay} added successfully! Redirecting to dashboard...`);

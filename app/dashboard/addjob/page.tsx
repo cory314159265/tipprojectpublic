@@ -50,7 +50,7 @@ const router = useRouter();
       const data = await response.json();
       // Add send to dashboard/addjob/jobdetails with query param of the business id from DB
       router.push('/dashboard/addjob/jobdetails?id=' + data);
-      console.log("response", data);
+      
     } catch (error) {
       console.error("Fetch error:", error);
     }

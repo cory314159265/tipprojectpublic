@@ -1,158 +1,104 @@
-"use client";
+"use client"
+// Login.tsx
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
+import { useRouter } from "next/navigation";
+import SignupSuccessPage from "./components/SignUpSuccess";
 
-type View = "sign-in" | "sign-up" | "check-email";
-//test
-export default function Login() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [verifyPassword, setVerifyPassword] = useState<string>("");
-  const [view, setView] = useState<View>("sign-in");
-  const router = useRouter();
+const Login: React.FC = () => {
   const supabase = createClientComponentClient();
+  const router = useRouter();
+  const [loginError, setLoginError] = useState<string | null>(null); // State to hold the error message
+  const [showSignupForm, setShowSignupForm] = useState<boolean>(false);
+  const [signupSuccess, setSignupSuccess] = useState<boolean>(false);
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== verifyPassword) {
-      alert("Passwords do not match");
-      return;
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        // Handle login error and display the error message
+        setLoginError("Incorrect email or password.");
+        console.error("Login failed:", error.message);
+      } else if (user) {
+        // Login successful, redirect to the dashboard or home page
+        console.log("Logged in as:", user.email);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
-    const { data } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { username },
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-    console.log(data);
-
-    
-    setView("check-email");
   };
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    console.log(data, error);
-    router.push("/dashboard");
-    router.refresh();
+  const handleSignup = async (
+    username: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username },
+          emailRedirectTo: `${location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        // Handle signup error and display the error message
+        setLoginError("Error occurred during signup.");
+        console.error("Signup failed:", error.message);
+      } else if (data) {
+        // Signup successful
+        console.log("Signup successful:", data);
+        setSignupSuccess(true); // Set the signup success status to true
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
+  };
+
+  const handleToggleSignupForm = () => {
+    setLoginError(null); // Clear the login error when toggling the form
+    setShowSignupForm((prevValue) => !prevValue);
   };
 
   return (
-    <div className="mt-10 flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      {view === "check-email" ? (
-        <p className="text-center text-foreground">
-          Check <span className="font-bold">{email}</span> to continue signing
-          up
-        </p>
-      ) : (
-        <form
-          className="flex-1 flex flex-col w-full gap-2 text-foreground"
-          onSubmit={view === "sign-in" ? handleSignIn : handleSignUp}
-        >
-          {view === "sign-up" ? (
-            <>
-              <label className="text-md" htmlFor="email">
-                User Name
-              </label>
-              <input
-                className="rounded-md px-4 py-2 bg-inherit border mb-6"
-                name="email"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                placeholder="choose a user name"
-              />{" "}
-            </>
+      <div className="container mx-auto mt-10">
+        <div className="max-w-md mx-auto">
+          <h2 className="text-2xl font-bold mb-6">
+            {showSignupForm ? "Sign Up" : "Login"}
+          </h2>
+          {showSignupForm ? (
+            // Render the SignupForm or the SignupSuccessPage based on the signup success status
+            signupSuccess ? (
+              <SignupSuccessPage email={'fake'} />
+            ) : (
+              <SignupForm onSignup={handleSignup} errorMessage={loginError as string} />
+            )
           ) : (
-            <></>
+            <LoginForm onLogin={handleLogin} errorMessage={loginError as string} />
           )}
-          <label className="text-md" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            placeholder="you@example.com"
-          />
-          <label className="text-md" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            placeholder="••••••••"
-          />
-          {view === "sign-up" ? (
-            <>
-              <label className="text-md" htmlFor="email">
-                Verify Password
-              </label>
-              <input
-                className="rounded-md px-4 py-2 bg-inherit border mb-6"
-                name="password"
-                onChange={(e) => setVerifyPassword(e.target.value)}
-                value={verifyPassword}
-                placeholder="Verify your password"
-              />{" "}
-            </>
-          ) : (
-            <></>
-          )}
-          {view === "sign-in" && (
-            <>
-              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6" name="Sign In">
-                Sign In
-              </button>
-              <p className="text-sm text-center">
-                Don't have an account?
-                <button
-                  className="ml-1 underline"
-                  onClick={() => setView("sign-up")}
-                >
-                  Sign Up Now
-                </button>
-              </p>
-            </>
-          )}
-          {view === "sign-up" && (
-            <>
-              <button className="bg-green-700 rounded px-4 py-2 text-white mb-6" name="sign up">
-                Sign Up
-              </button>
-              <p className="text-sm text-center">
-                Already have an account?
-                <button
-                  name = "sign in now"
-                  className="ml-1 underline"
-                  onClick={() => setView("sign-in")}
-                >
-                  Sign In Now
-                </button>
-              </p>
-            </>
-          )}
-          <Link
-            href="/"
-            className="mt-10 w-fit-content mx-auto justify-center py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
-          >
-            Back
-          </Link>
-        </form>
-      )}
-    </div>
-  );
-}
+          <div className="flex justify-center mt-4">
+            <button
+              className="text-blue-500 hover:text-blue-700"
+              onClick={handleToggleSignupForm}
+            >
+              {showSignupForm
+                ? "Already Signed Up? Login Now"
+                : "Not Signed Up, Sign Up Now"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+};
+
+export default Login;

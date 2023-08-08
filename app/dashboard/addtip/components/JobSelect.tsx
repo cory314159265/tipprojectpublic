@@ -1,6 +1,7 @@
 
 
 interface Job {
+    job_idnum: number;
   job_type: string;
   job_hourly_pay: string;
   job_id: number;
@@ -28,7 +29,7 @@ const JobSelect: React.FC<JobSelectProps> = ({ register, jobsList, errors }) => 
       >
         <option value="">Select a job...</option>
         {jobsList.map((job, index) => (
-          <option key={index} value={job.job_id}>
+          <option key={index} value={job.job_idnum}>
             {`${job.job_type.charAt(0).toUpperCase() + job.job_type.slice(1)} making $${job.job_hourly_pay} at ${job.job_id}`}
           </option>
         ))}

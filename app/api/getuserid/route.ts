@@ -6,13 +6,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
         process.env.NEXT_PUBLIC_SUPABASE_URL || "",
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
     );
-    const business_id = await req.json(); 
+    const user_id = await req.json();
+     // Get user_id from client query string
     try {
         const { data, error } = await supabase
-            .from("businesses")
-            .select("name")
-            .eq("place_id", business_id);
-
+            .from("users_table")
+            .select("user_id")
+            .eq("id", user_id);
+            
         return NextResponse.json(data);
         
 
@@ -22,3 +23,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     
 }
+
+

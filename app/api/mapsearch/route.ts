@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   
   const json = await response.json();
  
-  console.log(json);
+  
 
   return NextResponse.json(json);
 }
