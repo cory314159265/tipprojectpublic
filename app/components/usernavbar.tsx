@@ -4,9 +4,8 @@ import { useState } from "react";
 import menuArray from "../../public/dashboardmenucontent";
 import LogoutButton from "./LogoutButton";
 export default function NavbarIndex({}) {
-
   const [navbarOpen, setNavbarOpen] = useState(false);
-  
+
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-sky-400">
@@ -37,22 +36,20 @@ export default function NavbarIndex({}) {
             id="example-navbar-danger"
           >
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              {menuArray.map((item: string ) => (
+              {menuArray.map((item: string) => (
                 <li className="nav-item" key={item}>
-                <a
-                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  href = {`/dashboard/${item.toLowerCase().replace(/\s/g, '')}`} 
-                >
-                  <i className="fab  text-lg leading-lg text-white opacity-75"></i>
-                  <span className="ml-2">{item} </span>
-                </a>
-              </li>
-                ))
-            }
-            <li className="nav-item" >
+                  <a
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                    href={`/dashboard/${item.toLowerCase().replace(/\s/g, "")}`}
+                  >
+                    <i className="fab  text-lg leading-lg text-white opacity-75"></i>
+                    <span className="ml-2">{item} </span>
+                  </a>
+                </li>
+              ))}
+              <li className="nav-item">
                 <LogoutButton />
               </li>
-             
             </ul>
           </div>
         </div>

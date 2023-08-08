@@ -18,10 +18,7 @@ export default async function Index({ searchParams }: Props) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) {
-    redirect("/dashboard");
-  
-  }
+ 
   
   return (
     <div>

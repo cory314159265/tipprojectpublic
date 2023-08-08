@@ -38,7 +38,7 @@ const router = useRouter();
 
     try {
       // Send the updated business data to the server to insert the job
-      const response = await fetch("/api/insertbusiness/", {
+      const response = await fetch("/api/addjobs/insertbusiness/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const router = useRouter();
       // Process the response from the server
       const data = await response.json();
       // Add send to dashboard/addjob/jobdetails with query param of the business id from DB
-      router.push('/dashboard/addjob/jobdetails?id=' + data);
+      router.push('/dashboard/addjobs/addjob/jobdetails?id=' + data);
       
     } catch (error) {
       console.error("Fetch error:", error);
@@ -67,7 +67,7 @@ const router = useRouter();
     };
     try {
       // Send the search form data to the server for map search
-      const response = await fetch("/api/mapsearch/", {
+      const response = await fetch("/api/addjobs/mapsearch/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -45,7 +45,7 @@ const AddTipForm: React.FC = () => {
     if (user) {
       const user_id = user.id;
       
-      const userResponse = await fetch(`/api/getuserid`, {
+      const userResponse = await fetch(`/api/addtipsapi/getuserid`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const AddTipForm: React.FC = () => {
         time_worked_minutes: differenceInMinutes,
       };
       
-      const response = await fetch(`/api/addtip`, {
+      const response = await fetch(`/api/addtipsapi/addtip`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const AddTipForm: React.FC = () => {
 
       if (user) {
         const user_id = user.id;
-        const response = await fetch(`/api/getjobs`, {
+        const response = await fetch(`/api/addtipsapi/getjobs`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const AddTipForm: React.FC = () => {
 
         const jobsArray = await Promise.all(
           data.map(async (job: Job) => {
-            const response = await fetch(`/api/getbusinessname`, {
+            const response = await fetch(`/api/addtipsapi/getbusinessname`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
