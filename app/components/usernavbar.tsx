@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import menuArray from "../../public/dashboardmenucontent";
-
+import LogoutButton from "./LogoutButton";
 export default function NavbarIndex({}) {
 
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -49,6 +49,9 @@ export default function NavbarIndex({}) {
               </li>
                 ))
             }
+            <li className="nav-item" >
+                <LogoutButton />
+              </li>
              
             </ul>
           </div>

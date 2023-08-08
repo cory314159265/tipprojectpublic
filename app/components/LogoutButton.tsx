@@ -16,10 +16,10 @@ export default function LogoutButton() {
 
   return (
     <button
-      className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-      onClick={signOut}
-    >
-      Logout
-    </button>
+    className="text-xs px-3 py-2 uppercase flex items-center font-bold leading-snug text-white hover:opacity-75"
+    onClick={signOut}
+  ><span className="ml-2">Logout </span>
+    
+  </button>
   )
 }
