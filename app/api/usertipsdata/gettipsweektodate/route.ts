@@ -7,16 +7,17 @@ export async function POST(req: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
   );
-  const reqData = await req.json();
   
-
+  const reqData = await req.json();
+    console.log(reqData);
   const { data, error } = await supabase
     .from("tips_table")
-    .upsert([reqData])
-    .select();
+    .select("*")
+    .eq("user_id", reqData.user_id);
+
+  console.log(data, error);
   
   if (error) {
-    
     return NextResponse.json(error as PostgrestError);
   }
 
