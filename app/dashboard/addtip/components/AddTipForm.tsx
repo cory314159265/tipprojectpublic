@@ -35,7 +35,6 @@ const AddTipForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const supabase = createClientComponentClient();
 
-  let useridnumber = 0;
 
   const onSubmit = async (data: any) => {
     reset();
