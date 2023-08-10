@@ -1,36 +1,46 @@
 "use client";
-import { useEffect } from "react";
-import LastSevenDaysEarnings from "./components/charts/lastsevendayearnings";
+import { useState, useEffect } from 'react';
 
-export default function Dashboard() {
-   
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("/api/usertipsdata/gettipsweektodate/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ user_id: "1" }),
-                });
-
-                const data = await response.json();
-                
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
-    }, []); 
-    
-    return (
-        <>
-            <h1>DASHBOARD</h1>
-            <LastSevenDaysEarnings />
-        </>
-    );
+// Define the interface for the tip data
+interface TipData {
+  tip_id: number;
+  tip_amount: number;
+  time_worked_minutes: number;
+  job_type: string;
+  job_hourly_pay: string;
+  business_name: string;
+  total_earnings: number;
+    shift_date: string;
 }
 
+function TipsComponent() {
+  const [tipsData, setTipsData] = useState<TipData[]>([]);
 
+  useEffect(() => {
+    async function fetchTips() {
+      const response = await fetch('/api/usertipsdata/getmonthtips/');
+      const data = await response.json();
+      console.log(data);
+      await setTipsData(data);
+    }
+    fetchTips();
+    
+  }, []);
+
+  return (
+   <>
+   <h1> Dash Board</h1>
+    <h2> Tips </h2>
+    <div>
+        {tipsData.map((tip) => (
+            <div key={tip.tip_id}>
+                <p>Tip Amount: {tip.tip_amount}</p>
+                <p>Tip Date: {tip.shift_date}</p>
+            </div>
+            ))}
+    </div>
+   </>
+  );
+}
+
+export default TipsComponent;
