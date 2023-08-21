@@ -28,7 +28,7 @@ const asTipDataArray = (data: any[]): TipData[] => {
       },
     },
   }));
-};
+}; 
 
 const currentDate = new Date(); // Get the current date
 const startOfMonth = new Date(
@@ -58,6 +58,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
        )`
     )
     .eq("user_id", 1)
+   // Change: Fetch all user tips data, store in client, and then use that data everywhere,
+   // rather than fetching data for each page
     .gte("shift_date", startOfMonth.toISOString()) // Greater than or equal to the start of the current month
     .lt("shift_date", endOfMonth.toISOString());
 
@@ -86,10 +88,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
     });
 
     console.log("Calculated Data:", calculatedData);
+    return NextResponse.json(calculatedData);
   }
   if (error) {
     throw error;
   }
 
-  return NextResponse.json(data);
+  return NextResponse.json(error);
 }
